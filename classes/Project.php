@@ -4,9 +4,9 @@ require_once 'includes/database.php';
 class Project {
     private $pdo;
     
-    // Eigenschappen voor individuele projecten (zoals in de opdracht)
-    public $titel;
-    private $beschrijving;  // Private eigenschap zoals in opdracht
+    // Private eigenschappen volgens OOP principes
+    private $titel;           // Nu private gemaakt
+    private $beschrijving;    // Al private
     public $categorie;
     public $technologies;
     public $image_url;
@@ -25,8 +25,8 @@ class Project {
         
         // Als er parameters zijn doorgegeven, maak dan een individueel project object
         if ($titel !== null) {
-            $this->titel = $titel;
-            $this->beschrijving = $beschrijving;
+            $this->setTitel($titel);              // Gebruik setter
+            $this->setBeschrijving($beschrijving); // Gebruik setter
             $this->categorie = $categorie;
             $this->technologies = $technologies;
             $this->image_url = $image_url;
@@ -35,6 +35,20 @@ class Project {
             $this->startdatum = $startdatum;
             $this->einddatum = $einddatum;
         }
+    }
+    
+    /**
+     * Getter methode voor private eigenschap titel
+     */
+    public function getTitel() {
+        return $this->titel;
+    }
+    
+    /**
+     * Setter methode voor titel
+     */
+    public function setTitel($titel) {
+        $this->titel = $titel;
     }
     
     /**
@@ -55,7 +69,7 @@ class Project {
      * Methode die projectinformatie retourneert (uit opdracht)
      */
     public function getProjectInfo() {
-        $info = "Titel: " . $this->titel . "\n";
+        $info = "Titel: " . $this->getTitel() . "\n";
         $info .= "Beschrijving: " . $this->getBeschrijving() . "\n";
         $info .= "Categorie: " . $this->categorie . "\n";
         
@@ -109,7 +123,7 @@ class Project {
      * Krijg een korte samenvatting
      */
     public function getSamenvatting() {
-        $samenvatting = $this->titel;
+        $samenvatting = $this->getTitel();
         
         if ($this->categorie) {
             $samenvatting .= " (" . $this->categorie . ")";

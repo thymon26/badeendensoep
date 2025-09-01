@@ -4,9 +4,9 @@
  * Deze klasse demonstreert OOP concepten zoals constructors, visibiliteit en methoden
  */
 class ProjectOpdracht {
-    // Eigenschappen
-    public $titel;
-    private $beschrijving;  // Private eigenschap
+    // Eigenschappen - nu volgens strikte OOP principes
+    private $titel;         // Nu private gemaakt
+    private $beschrijving;  // Al private
     public $categorie;
     public $startdatum;     // Voor bonusopdracht
     public $einddatum;      // Voor bonusopdracht
@@ -15,11 +15,25 @@ class ProjectOpdracht {
      * Constructor - initialiseert de eigenschappen wanneer een object wordt aangemaakt
      */
     public function __construct($titel, $beschrijving, $categorie, $startdatum = null, $einddatum = null) {
-        $this->titel = $titel;
-        $this->beschrijving = $beschrijving;
+        $this->setTitel($titel);              // Gebruik setter
+        $this->setBeschrijving($beschrijving); // Gebruik setter
         $this->categorie = $categorie;
         $this->startdatum = $startdatum;
         $this->einddatum = $einddatum;
+    }
+    
+    /**
+     * Getter methode voor private eigenschap titel
+     */
+    public function getTitel() {
+        return $this->titel;
+    }
+    
+    /**
+     * Setter methode voor titel
+     */
+    public function setTitel($titel) {
+        $this->titel = $titel;
     }
     
     /**
@@ -40,7 +54,7 @@ class ProjectOpdracht {
      * Methode die de projectinformatie retourneert
      */
     public function getProjectInfo() {
-        $info = "Titel: " . $this->titel . "\n";
+        $info = "Titel: " . $this->getTitel() . "\n";
         $info .= "Beschrijving: " . $this->getBeschrijving() . "\n";
         $info .= "Categorie: " . $this->categorie . "\n";
         
@@ -91,7 +105,7 @@ class ProjectOpdracht {
      * Extra methode: Krijg een korte samenvatting
      */
     public function getSamenvatting() {
-        $samenvatting = $this->titel . " (" . $this->categorie . ")";
+        $samenvatting = $this->getTitel() . " (" . $this->categorie . ")";
         
         if ($this->isActief()) {
             $samenvatting .= " - ACTIEF";
@@ -151,9 +165,21 @@ echo "<h3>Project 3:</h3>";
 echo "<pre>" . $project3->getProjectInfo() . "</pre>";
 echo "</div>";
 
-// Demonstratie van getter voor private eigenschap
-echo "<h2>Demonstratie van Private Eigenschap:</h2>\n";
+// Demonstratie van getters voor private eigenschappen
+echo "<h2>Demonstratie van Private Eigenschappen:</h2>\n";
+echo "<p>Project 1 titel via getter: <strong>" . $project1->getTitel() . "</strong></p>\n";
 echo "<p>Project 1 beschrijving via getter: <strong>" . $project1->getBeschrijving() . "</strong></p>\n";
+
+// Demonstratie van setters
+echo "<h2>Demonstratie van Setters:</h2>\n";
+$project1->setTitel("Portfolio Website (BIJGEWERKT)");
+$project1->setBeschrijving("Een website om mijn werk te tonen - nu met extra functionaliteit!");
+
+echo "<p>Na het gebruiken van setters:</p>";
+echo "<ul>";
+echo "<li>Nieuwe titel: <strong>" . $project1->getTitel() . "</strong></li>";
+echo "<li>Nieuwe beschrijving: <strong>" . $project1->getBeschrijving() . "</strong></li>";
+echo "</ul>";
 
 // Demonstratie van extra methoden
 echo "<h2>Extra Functionaliteit:</h2>\n";
@@ -176,7 +202,7 @@ echo "</tr>";
 
 foreach ($alleProjecten as $project) {
     echo "<tr>";
-    echo "<td style='padding: 10px;'>" . $project->titel . "</td>";
+    echo "<td style='padding: 10px;'>" . $project->getTitel() . "</td>";
     echo "<td style='padding: 10px;'>" . $project->categorie . "</td>";
     echo "<td style='padding: 10px;'>" . ($project->isActief() ? "ACTIEF" : "VOLTOOID") . "</td>";
     echo "<td style='padding: 10px;'>" . $project->getProjectDuration() . "</td>";
