@@ -10,7 +10,7 @@ $projects = $projectModel->getAllProjects();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thymon's Portfolio</title>
+    <title>Thymen's Portfolio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -182,7 +182,7 @@ $projects = $projectModel->getAllProjects();
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
-            <h1><i class="fas fa-code"></i> Thymon's Portfolio</h1>
+            <h1><i class="fas fa-code"></i> Thymen's Portfolio</h1>
             <p>Welkom bij mijn portfolio! Hier vind je een overzicht van mijn projecten en werkzaamheden.</p>
             <a href="#portfolio" class="btn btn-light btn-lg">
                 <i class="fas fa-arrow-down"></i> Bekijk Mijn Werk
