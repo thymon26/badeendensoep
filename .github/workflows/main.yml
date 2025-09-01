@@ -1,0 +1,23 @@
+name: FTP Deploy
+
+on:
+  push:
+    branches:
+      - main  # Of je gebruikte branch
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: FTP upload
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: srv042127.webreus.net
+          username: qixuanbadeend
+          password: ${{ secrets.password }}
+          local-dir: ./  # Pas aan als je alleen een map zoals 'dist/' wilt uploaden
+          server-dir: /web/
