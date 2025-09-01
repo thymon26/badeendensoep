@@ -68,11 +68,44 @@
                             <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
                         </div>
                         
-                        <div class="mb-3">
-                            <label for="technologies" class="form-label">Technologieën *</label>
-                            <input type="text" class="form-control" id="technologies" name="technologies" 
-                                   placeholder="bijv. PHP, MySQL, JavaScript" required>
-                            <div class="form-text">Scheid technologieën met komma's</div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">Categorie *</label>
+                                    <select class="form-control" id="category" name="category" required>
+                                        <option value="Algemeen">Algemeen</option>
+                                        <option value="Schoolopdracht">Schoolopdracht</option>
+                                        <option value="Eindproject">Eindproject</option>
+                                        <option value="Professioneel">Professioneel</option>
+                                        <option value="Hobby Project">Hobby Project</option>
+                                        <option value="Open Source">Open Source</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="technologies" class="form-label">Technologieën *</label>
+                                    <input type="text" class="form-control" id="technologies" name="technologies" 
+                                           placeholder="bijv. PHP, MySQL, JavaScript" required>
+                                    <div class="form-text">Scheid technologieën met komma's</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="start_date" class="form-label">Startdatum</label>
+                                    <input type="date" class="form-control" id="start_date" name="start_date">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="end_date" class="form-label">Einddatum</label>
+                                    <input type="date" class="form-control" id="end_date" name="end_date">
+                                    <div class="form-text">Laat leeg als project nog actief is</div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="mb-3">

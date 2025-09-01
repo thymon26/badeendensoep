@@ -48,9 +48,12 @@ class ProjectController {
             $title = $data['title'] ?? '';
             $description = $data['description'] ?? '';
             $technologies = $data['technologies'] ?? '';
+            $category = $data['category'] ?? 'Algemeen';
             $image_url = $data['image_url'] ?? null;
             $project_url = $data['project_url'] ?? null;
             $github_url = $data['github_url'] ?? null;
+            $start_date = $data['start_date'] ?? null;
+            $end_date = $data['end_date'] ?? null;
 
             if (empty($title) || empty($description) || empty($technologies)) {
                 return $this->sendResponse(false, null, 'Titel, beschrijving en technologieën zijn verplicht');
@@ -62,7 +65,10 @@ class ProjectController {
                 $technologies, 
                 $image_url, 
                 $project_url, 
-                $github_url
+                $github_url,
+                $category,
+                $start_date,
+                $end_date
             );
             
             return $this->sendResponse(true, ['id' => $projectId], 'Project succesvol toegevoegd');
@@ -80,9 +86,12 @@ class ProjectController {
             $title = $data['title'] ?? '';
             $description = $data['description'] ?? '';
             $technologies = $data['technologies'] ?? '';
+            $category = $data['category'] ?? 'Algemeen';
             $image_url = $data['image_url'] ?? null;
             $project_url = $data['project_url'] ?? null;
             $github_url = $data['github_url'] ?? null;
+            $start_date = $data['start_date'] ?? null;
+            $end_date = $data['end_date'] ?? null;
 
             if (!$id || empty($title) || empty($description) || empty($technologies)) {
                 return $this->sendResponse(false, null, 'ID, titel, beschrijving en technologieën zijn verplicht');
@@ -95,7 +104,10 @@ class ProjectController {
                 $technologies, 
                 $image_url, 
                 $project_url, 
-                $github_url
+                $github_url,
+                $category,
+                $start_date,
+                $end_date
             );
             
             if ($success) {
@@ -140,6 +152,58 @@ class ProjectController {
 
             $projects = $this->projectModel->searchByTechnology($technology);
             return $this->sendResponse(true, $projects);
+        } catch (Exception $e) {
+            return $this->sendResponse(false, null, $e->getMessage());
+        }
+    }
+    
+    /**
+     * Zoek projecten op categorie
+     */
+    public function searchByCategory($category) {
+        try {
+            if (empty($category)) {
+                return $this->sendResponse(false, null, 'Categorie is vereist');
+            }
+
+            $projects = $this->projectModel->searchByCategory($category);
+            return $this->sendResponse(true, $projects);
+        } catch (Exception $e) {
+            return $this->sendResponse(false, null, $e->getMessage());
+        }
+    }
+    
+    /**
+     * Haal actieve projecten op
+     */
+    public function getActiveProjects() {
+        try {
+            $projects = $this->projectModel->getActiveProjects();
+            return $this->sendResponse(true, $projects);
+        } catch (Exception $e) {
+            return $this->sendResponse(false, null, $e->getMessage());
+        }
+    }
+    
+    /**
+     * Haal voltooide projecten op
+     */
+    public function getCompletedProjects() {
+        try {
+            $projects = $this->projectModel->getCompletedProjects();
+            return $this->sendResponse(true, $projects);
+        } catch (Exception $e) {
+            return $this->sendResponse(false, null, $e->getMessage());
+        }
+    }
+    
+    /**
+     * Haal alle categorieën op
+     */
+    public function getAllCategories() {
+        try {
+            $categories = $this->projectModel->getAllCategories();
+            return $this->sendResponse(true, $categories);
         } catch (Exception $e) {
             return $this->sendResponse(false, null, $e->getMessage());
         }

@@ -111,13 +111,34 @@ class PortfolioBeheer {
             : `<div class="project-image-placeholder"><i class="fas fa-code"></i></div>`;
 
         const linksHtml = this.createProjectLinks(project);
+        
+        // Voeg categorie en datum informatie toe
+        const categoryHtml = project.category ? `<span class="badge bg-primary mb-2">${project.category}</span>` : '';
+        
+        let dateInfoHtml = '';
+        if (project.start_date || project.end_date) {
+            dateInfoHtml = '<div class="project-dates mb-2">';
+            if (project.start_date) {
+                dateInfoHtml += `<small class="text-muted"><i class="fas fa-play"></i> Start: ${this.formatDate(project.start_date)}</small><br>`;
+            }
+            if (project.end_date) {
+                dateInfoHtml += `<small class="text-muted"><i class="fas fa-stop"></i> Eind: ${this.formatDate(project.end_date)}</small>`;
+            } else if (project.start_date) {
+                dateInfoHtml += `<small class="text-success"><i class="fas fa-clock"></i> Actief</small>`;
+            }
+            dateInfoHtml += '</div>';
+        }
 
         return `
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="card project-card">
                     ${imageHtml}
                     <div class="card-body">
-                        <h5 class="card-title">${project.title}</h5>
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">${project.title}</h5>
+                            ${categoryHtml}
+                        </div>
+                        ${dateInfoHtml}
                         <p class="card-text">${project.description}</p>
                         <div class="mb-2">
                             ${technologies}
@@ -135,6 +156,12 @@ class PortfolioBeheer {
                 </div>
             </div>
         `;
+    }
+    
+    formatDate(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('nl-NL');
     }
 
     createProjectLinks(project) {
@@ -203,10 +230,13 @@ class PortfolioBeheer {
                 document.getElementById('projectId').value = project.id;
                 document.getElementById('title').value = project.title;
                 document.getElementById('description').value = project.description;
+                document.getElementById('category').value = project.category || 'Algemeen';
                 document.getElementById('technologies').value = project.technologies;
                 document.getElementById('image_url').value = project.image_url || '';
                 document.getElementById('project_url').value = project.project_url || '';
                 document.getElementById('github_url').value = project.github_url || '';
+                document.getElementById('start_date').value = project.start_date || '';
+                document.getElementById('end_date').value = project.end_date || '';
 
                 // Update modal titel
                 document.getElementById('modalTitle').textContent = 'Project Bewerken';
@@ -263,6 +293,7 @@ class PortfolioBeheer {
     resetForm() {
         document.getElementById('projectForm').reset();
         document.getElementById('projectId').value = '';
+        document.getElementById('category').value = 'Algemeen'; // Reset naar default
         document.getElementById('modalTitle').textContent = 'Nieuw Project Toevoegen';
     }
 

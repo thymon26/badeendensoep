@@ -221,7 +221,33 @@ $projects = $projectModel->getAllProjects();
                                 <?php endif; ?>
                                 
                                 <div class="card-body">
-                                    <h5 class="card-title"><?= htmlspecialchars($project['title']) ?></h5>
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title mb-0"><?= htmlspecialchars($project['title']) ?></h5>
+                                        <?php if (isset($project['category']) && $project['category']): ?>
+                                            <span class="badge bg-primary"><?= htmlspecialchars($project['category']) ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                    <?php if (isset($project['start_date']) || isset($project['end_date'])): ?>
+                                        <div class="project-dates mb-2">
+                                            <?php if (isset($project['start_date']) && $project['start_date']): ?>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-play"></i> Start: <?= date('d-m-Y', strtotime($project['start_date'])) ?>
+                                                </small><br>
+                                            <?php endif; ?>
+                                            
+                                            <?php if (isset($project['end_date']) && $project['end_date']): ?>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-stop"></i> Eind: <?= date('d-m-Y', strtotime($project['end_date'])) ?>
+                                                </small>
+                                            <?php elseif (isset($project['start_date']) && $project['start_date']): ?>
+                                                <small class="text-success">
+                                                    <i class="fas fa-clock"></i> Actief
+                                                </small>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    
                                     <p class="card-text"><?= htmlspecialchars($project['description']) ?></p>
                                     
                                     <div class="mb-3">

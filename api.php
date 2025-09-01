@@ -84,45 +84,24 @@ try {
             sendResponse($result['success'], $result['data'], $result['message']);
             break;
 
-        default:
-            sendResponse(false, null, 'Onbekende actie: "' . $action . '"');
-            break;
-    }
-
-} catch (Exception $e) {
-    sendResponse(false, null, 'Server fout: ' . $e->getMessage());
-}
-?>
-        case 'getAllProjects':
-            $result = $controller->getAllProjects();
+        case 'searchByCategory':
+            $category = $_GET['category'] ?? '';
+            $result = $controller->searchByCategory($category);
             sendResponse($result['success'], $result['data'], $result['message']);
             break;
 
-        case 'getProject':
-            $id = $_GET['id'] ?? 0;
-            $result = $controller->getProject($id);
+        case 'getActiveProjects':
+            $result = $controller->getActiveProjects();
             sendResponse($result['success'], $result['data'], $result['message']);
             break;
 
-        case 'addProject':
-            $result = $controller->addProject($_POST);
+        case 'getCompletedProjects':
+            $result = $controller->getCompletedProjects();
             sendResponse($result['success'], $result['data'], $result['message']);
             break;
 
-        case 'updateProject':
-            $result = $controller->updateProject($_POST);
-            sendResponse($result['success'], $result['data'], $result['message']);
-            break;
-
-        case 'deleteProject':
-            $id = $_POST['id'] ?? $_GET['id'] ?? 0;
-            $result = $controller->deleteProject($id);
-            sendResponse($result['success'], $result['data'], $result['message']);
-            break;
-
-        case 'searchByTechnology':
-            $technology = $_GET['technology'] ?? '';
-            $result = $controller->searchByTechnology($technology);
+        case 'getAllCategories':
+            $result = $controller->getAllCategories();
             sendResponse($result['success'], $result['data'], $result['message']);
             break;
 
