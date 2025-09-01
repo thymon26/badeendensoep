@@ -167,6 +167,9 @@ class PortfolioBeheer {
 
         const projectId = formData.get('projectId');
         const action = projectId ? 'updateProject' : 'addProject';
+        
+        // Voeg de actie toe aan de FormData
+        formData.append('action', action);
 
         try {
             const response = await fetch('api.php', {
@@ -252,6 +255,9 @@ class PortfolioBeheer {
         } catch (error) {
             this.showAlert('danger', 'Fout bij verwijderen: ' + error.message);
         }
+
+        // Reset de current project ID
+        this.currentProjectId = null;
     }
 
     resetForm() {
