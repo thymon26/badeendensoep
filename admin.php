@@ -1,26 +1,64 @@
+<?php
+// Beveilig deze pagina
+require_once 'includes/auth.php';
+checkAdminLogin();
+?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Beheer</title>
+    <title>Admin - Portfolio Beheer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
 </head>
 <body>
     <div class="container-fluid">
-        <!-- Header -->
+        <!-- Header met logout -->
         <nav class="navbar navbar-dark bg-dark mb-4">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">
-                    <i class="fas fa-briefcase"></i> Portfolio Beheer
+                    <i class="fas fa-shield-alt"></i> Portfolio Beheer
                 </span>
-                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProjectModal">
-                    <i class="fas fa-plus"></i> Nieuw Project
-                </button>
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text me-3">
+                        <i class="fas fa-user"></i> Welkom, <?= htmlspecialchars(getAdminUser()) ?>
+                    </span>
+                    <small class="navbar-text me-3 text-muted">
+                        Ingelogd: <?= htmlspecialchars(getLoginTime()) ?>
+                    </small>
+                    <a href="index.php" class="btn btn-outline-light btn-sm me-2">
+                        <i class="fas fa-eye"></i> Bekijk Portfolio
+                    </a>
+                    <a href="login.php?logout=1" class="btn btn-danger btn-sm">
+                        <i class="fas fa-sign-out-alt"></i> Uitloggen
+                    </a>
+                </div>
             </div>
         </nav>
+
+        <!-- Admin functionaliteit knoppen -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProjectModal">
+                        <i class="fas fa-plus"></i> Nieuw Project
+                    </button>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-primary" onclick="portfolioBeheer.loadProjects()">
+                            <i class="fas fa-list"></i> Alle Projecten
+                        </button>
+                        <button type="button" class="btn btn-outline-success" onclick="portfolioBeheer.loadActiveProjects()">
+                            <i class="fas fa-play"></i> Actieve Projecten
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="portfolioBeheer.loadCompletedProjects()">
+                            <i class="fas fa-check"></i> Voltooide Projecten
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Alert voor berichten -->
         <div id="alertContainer"></div>

@@ -8,9 +8,26 @@ class PortfolioBeheer {
     init() {
         this.bindEvents();
         this.loadProjects();
+        this.setActiveButton('showAll');
     }
 
     bindEvents() {
+        // Filter buttons
+        document.getElementById('showAll').addEventListener('click', () => {
+            this.loadProjects();
+            this.setActiveButton('showAll');
+        });
+
+        document.getElementById('showActive').addEventListener('click', () => {
+            this.loadActiveProjects();
+            this.setActiveButton('showActive');
+        });
+
+        document.getElementById('showCompleted').addEventListener('click', () => {
+            this.loadCompletedProjects();
+            this.setActiveButton('showCompleted');
+        });
+
         // Save project button
         document.getElementById('saveProjectBtn').addEventListener('click', () => {
             this.saveProject();
@@ -59,6 +76,40 @@ class PortfolioBeheer {
         }
     }
 
+    async loadActiveProjects() {
+        try {
+            this.showLoading();
+            const response = await fetch('api.php?action=getActiveProjects');
+            const result = await response.json();
+
+            if (result.success) {
+                this.displayProjects(result.data, 'actief');
+                this.showAlert('info', `${result.data.length} actieve projecten gevonden`);
+            } else {
+                this.showAlert('danger', result.message);
+            }
+        } catch (error) {
+            this.showAlert('danger', 'Fout bij laden actieve projecten: ' + error.message);
+        }
+    }
+
+    async loadCompletedProjects() {
+        try {
+            this.showLoading();
+            const response = await fetch('api.php?action=getCompletedProjects');
+            const result = await response.json();
+
+            if (result.success) {
+                this.displayProjects(result.data, 'voltooid');
+                this.showAlert('info', `${result.data.length} voltooide projecten gevonden`);
+            } else {
+                this.showAlert('danger', result.message);
+            }
+        } catch (error) {
+            this.showAlert('danger', 'Fout bij laden voltooide projecten: ' + error.message);
+        }
+    }
+
     async searchProjects() {
         const searchTerm = document.getElementById('searchInput').value.trim();
         
@@ -82,16 +133,42 @@ class PortfolioBeheer {
         }
     }
 
-    displayProjects(projects) {
+    displayProjects(projects, filterType = 'alle') {
         const grid = document.getElementById('projectsGrid');
         
         if (projects.length === 0) {
+            let emptyMessage = '';
+            let emptyIcon = '';
+            
+            switch(filterType) {
+                case 'actief':
+                    emptyIcon = 'fas fa-play-circle';
+                    emptyMessage = {
+                        title: 'Geen actieve projecten',
+                        subtitle: 'Er zijn momenteel geen projecten in uitvoering.'
+                    };
+                    break;
+                case 'voltooid':
+                    emptyIcon = 'fas fa-check-circle';
+                    emptyMessage = {
+                        title: 'Geen voltooide projecten',
+                        subtitle: 'Er zijn nog geen projecten afgerond.'
+                    };
+                    break;
+                default:
+                    emptyIcon = 'fas fa-folder-open';
+                    emptyMessage = {
+                        title: 'Geen projecten gevonden',
+                        subtitle: 'Voeg je eerste project toe om te beginnen!'
+                    };
+            }
+            
             grid.innerHTML = `
                 <div class="col-12">
                     <div class="empty-state">
-                        <i class="fas fa-folder-open"></i>
-                        <h3>Geen projecten gevonden</h3>
-                        <p>Voeg je eerste project toe om te beginnen!</p>
+                        <i class="${emptyIcon}"></i>
+                        <h4>${emptyMessage.title}</h4>
+                        <p>${emptyMessage.subtitle}</p>
                     </div>
                 </div>
             `;
@@ -341,6 +418,23 @@ class PortfolioBeheer {
                 </div>
             </div>
         `;
+    }
+
+    setActiveButton(buttonId) {
+        // Remove active class from all filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-outline-primary');
+        });
+
+        // Add active class to clicked button
+        const activeBtn = document.getElementById(buttonId);
+        if (activeBtn) {
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('btn-outline-primary');
+            activeBtn.classList.add('btn-primary');
+        }
     }
 }
 
