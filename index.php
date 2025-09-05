@@ -286,7 +286,7 @@ $projects = $projectModel->getAllProjects();
     </section>
 
     <!-- Admin Link -->
-    <a href="portfolio.php" class="admin-link" title="Portfolio Beheer">
+    <a href="admin.php" class="admin-link" title="Portfolio Beheer">
         <i class="fas fa-cog"></i> Beheer
     </a>
 
