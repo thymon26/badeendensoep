@@ -46,13 +46,13 @@ checkAdminLogin();
                         <i class="fas fa-plus"></i> Nieuw Project
                     </button>
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-primary" onclick="portfolioBeheer.loadProjects()">
+                        <button type="button" class="btn btn-outline-primary filter-btn" id="showAll">
                             <i class="fas fa-list"></i> Alle Projecten
                         </button>
-                        <button type="button" class="btn btn-outline-success" onclick="portfolioBeheer.loadActiveProjects()">
+                        <button type="button" class="btn btn-outline-success filter-btn" id="showActive">
                             <i class="fas fa-play"></i> Actieve Projecten
                         </button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="portfolioBeheer.loadCompletedProjects()">
+                        <button type="button" class="btn btn-outline-secondary filter-btn" id="showCompleted">
                             <i class="fas fa-check"></i> Voltooide Projecten
                         </button>
                     </div>
