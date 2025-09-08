@@ -309,5 +309,50 @@ class Project {
             throw new Exception("Fout bij ophalen categorieën: " . $e->getMessage());
         }
     }
+    
+    /**
+     * Toont gedetailleerde informatie over het project
+     * 
+     * @return string HTML-geformatteerde project informatie
+     */
+    public function getInfo() {
+        $info = "<div class='project-info'>";
+        $info .= "<p><strong>Beschrijving:</strong> " . $this->getBeschrijving() . "</p>";
+        
+        if ($this->categorie) {
+            $info .= "<p><strong>Categorie:</strong> <span class='badge bg-primary'>" . $this->categorie . "</span></p>";
+        }
+        
+        if ($this->technologies) {
+            $info .= "<p><strong>Technologieën:</strong> " . $this->technologies . "</p>";
+        }
+        
+        if ($this->startdatum) {
+            $info .= "<p><strong>Startdatum:</strong> " . date('d-m-Y', strtotime($this->startdatum)) . "</p>";
+        }
+        
+        if ($this->einddatum) {
+            $info .= "<p><strong>Einddatum:</strong> " . date('d-m-Y', strtotime($this->einddatum)) . "</p>";
+            $info .= "<p><span class='badge bg-success'>Voltooid</span></p>";
+        } else {
+            $info .= "<p><span class='badge bg-warning'>Actief Project</span></p>";
+        }
+        
+        // Links indien beschikbaar
+        $links = [];
+        if ($this->project_url) {
+            $links[] = "<a href='{$this->project_url}' target='_blank' class='btn btn-sm btn-outline-primary'>Project Bekijken</a>";
+        }
+        if ($this->github_url) {
+            $links[] = "<a href='{$this->github_url}' target='_blank' class='btn btn-sm btn-outline-secondary'>GitHub</a>";
+        }
+        
+        if (!empty($links)) {
+            $info .= "<p><strong>Links:</strong><br>" . implode(' ', $links) . "</p>";
+        }
+        
+        $info .= "</div>";
+        return $info;
+    }
 }
 ?>

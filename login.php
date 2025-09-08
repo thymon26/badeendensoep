@@ -3,7 +3,7 @@ session_start();
 
 // Simpel wachtwoord systeem (in productie zou je een database met gehashte wachtwoorden gebruiken)
 $admin_username = 'admin';
-$admin_password = 'thymen2024'; // Verander dit naar je gewenste wachtwoord
+$admin_password = 'thymen2025'; // Verander dit naar je gewenste wachtwoord
 
 $login_error = '';
 
