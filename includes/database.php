@@ -1,6 +1,6 @@
 <?php
 // Database configuratie
-$host = 'localhost';
+$host =  'localhost';
 $db   = 'c51543Badeendensoep';
 $user = 'c51543Thymen';
 $pass = 'Thym3n2oo8!';

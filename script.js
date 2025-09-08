@@ -7,57 +7,92 @@ class PortfolioBeheer {
 
     init() {
         this.bindEvents();
-        this.loadProjects();
-        this.setActiveButton('showAll');
+        
+        // Laad alleen projecten als de projectsGrid bestaat
+        const projectsGrid = document.getElementById('projectsGrid');
+        if (projectsGrid) {
+            this.loadProjects();
+            this.setActiveButton('showAll');
+        }
     }
 
     bindEvents() {
-        // Filter buttons
-        document.getElementById('showAll').addEventListener('click', () => {
-            this.loadProjects();
-            this.setActiveButton('showAll');
-        });
+        // Filter buttons - controleer eerst of ze bestaan
+        const showAllBtn = document.getElementById('showAll');
+        if (showAllBtn) {
+            showAllBtn.addEventListener('click', () => {
+                this.loadProjects();
+                this.setActiveButton('showAll');
+            });
+        }
 
-        document.getElementById('showActive').addEventListener('click', () => {
-            this.loadActiveProjects();
-            this.setActiveButton('showActive');
-        });
+        const showActiveBtn = document.getElementById('showActive');
+        if (showActiveBtn) {
+            showActiveBtn.addEventListener('click', () => {
+                this.loadActiveProjects();
+                this.setActiveButton('showActive');
+            });
+        }
 
-        document.getElementById('showCompleted').addEventListener('click', () => {
-            this.loadCompletedProjects();
-            this.setActiveButton('showCompleted');
-        });
+        const showCompletedBtn = document.getElementById('showCompleted');
+        if (showCompletedBtn) {
+            showCompletedBtn.addEventListener('click', () => {
+                this.loadCompletedProjects();
+                this.setActiveButton('showCompleted');
+            });
+        }
 
         // Save project button
-        document.getElementById('saveProjectBtn').addEventListener('click', () => {
-            this.saveProject();
-        });
+        const saveProjectBtn = document.getElementById('saveProjectBtn');
+        if (saveProjectBtn) {
+            saveProjectBtn.addEventListener('click', () => {
+                this.saveProject();
+            });
+        }
 
         // Search functionality
-        document.getElementById('searchBtn').addEventListener('click', () => {
-            this.searchProjects();
-        });
-
-        document.getElementById('searchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+        const searchBtn = document.getElementById('searchBtn');
+        if (searchBtn) {
+            searchBtn.addEventListener('click', () => {
                 this.searchProjects();
-            }
-        });
+            });
+        }
 
-        document.getElementById('clearSearchBtn').addEventListener('click', () => {
-            document.getElementById('searchInput').value = '';
-            this.loadProjects();
-        });
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.searchProjects();
+                }
+            });
+        }
+
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        if (clearSearchBtn) {
+            clearSearchBtn.addEventListener('click', () => {
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.value = '';
+                }
+                this.loadProjects();
+            });
+        }
 
         // Confirm delete button
-        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-            this.deleteProject();
-        });
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        if (confirmDeleteBtn) {
+            confirmDeleteBtn.addEventListener('click', () => {
+                this.deleteProject();
+            });
+        }
 
         // Reset form when modal is hidden
-        document.getElementById('addProjectModal').addEventListener('hidden.bs.modal', () => {
-            this.resetForm();
-        });
+        const addProjectModal = document.getElementById('addProjectModal');
+        if (addProjectModal) {
+            addProjectModal.addEventListener('hidden.bs.modal', () => {
+                this.resetForm();
+            });
+        }
     }
 
     async loadProjects() {
@@ -111,7 +146,15 @@ class PortfolioBeheer {
     }
 
     async searchProjects() {
-        const searchTerm = document.getElementById('searchInput').value.trim();
+        const searchInput = document.getElementById('searchInput');
+        
+        // Controleer of searchInput bestaat
+        if (!searchInput) {
+            console.warn('searchInput element niet gevonden');
+            return;
+        }
+        
+        const searchTerm = searchInput.value.trim();
         
         if (!searchTerm) {
             this.loadProjects();
@@ -135,6 +178,12 @@ class PortfolioBeheer {
 
     displayProjects(projects, filterType = 'alle') {
         const grid = document.getElementById('projectsGrid');
+        
+        // Controleer of grid element bestaat
+        if (!grid) {
+            console.warn('projectsGrid element niet gevonden');
+            return;
+        }
         
         if (projects.length === 0) {
             let emptyMessage = '';
@@ -386,6 +435,13 @@ class PortfolioBeheer {
 
     showAlert(type, message) {
         const alertContainer = document.getElementById('alertContainer');
+        
+        // Controleer of alertContainer bestaat
+        if (!alertContainer) {
+            console.warn('alertContainer element niet gevonden');
+            return;
+        }
+        
         const alertId = 'alert-' + Date.now();
         
         const alertHtml = `
@@ -408,16 +464,19 @@ class PortfolioBeheer {
     }
 
     showLoading() {
-        document.getElementById('projectsGrid').innerHTML = `
-            <div class="col-12">
-                <div class="loading">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Laden...</span>
+        const projectsGrid = document.getElementById('projectsGrid');
+        if (projectsGrid) {
+            projectsGrid.innerHTML = `
+                <div class="col-12">
+                    <div class="loading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Laden...</span>
+                        </div>
+                        <p class="mt-2">Projecten laden...</p>
                     </div>
-                    <p class="mt-2">Projecten laden...</p>
                 </div>
-            </div>
-        `;
+            `;
+        }
     }
 
     setActiveButton(buttonId) {
@@ -438,5 +497,16 @@ class PortfolioBeheer {
     }
 }
 
-// Initialiseer de applicatie
-const portfolioBeheer = new PortfolioBeheer();
+// Initialiseer de applicatie alleen als de DOM geladen is
+document.addEventListener('DOMContentLoaded', function() {
+    // Controleer of we op een pagina zijn die de portfolio beheer nodig heeft
+    const hasPortfolioElements = document.getElementById('projectsGrid') || 
+                                 document.getElementById('saveProjectBtn') || 
+                                 document.getElementById('searchInput');
+    
+    if (hasPortfolioElements) {
+        const portfolioBeheer = new PortfolioBeheer();
+    } else {
+        console.log('Portfolio beheer niet geïnitialiseerd - elementen niet gevonden');
+    }
+});
